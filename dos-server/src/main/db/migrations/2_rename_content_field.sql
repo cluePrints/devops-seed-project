@@ -1,0 +1,1 @@
+alter table pages change contents content varchar (10000);

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	
+	<jmxConfigurator />
+	
+	<property name="default.charset" value="UTF-8" />
+	<property name="default.maxIndex" value="10" />
+	<property name="default.maxFileSize" value="50MB" />
+
+	<appender name="R"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Append>true</Append>
+		<File>dos-client.log</File>
+		<encoder>
+			<charset>${default.charset}</charset>
+			<pattern>%d{ISO8601} [%t] %-5p [%c{0}] - %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>${default.maxIndex}</maxIndex>
+			<FileNamePattern>dos-client.log.%i</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>${default.maxFileSize}</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>${default.charset}</charset>
+			<pattern>%d{ISO8601} [%t] %-5p [%c{0}] - %m%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="org.springframework" level="WARN" />
+	<logger name="org.apache.commons.httpclient" level="WARN" />
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.apache.http" level="WARN" />
+
+	<root level="DEBUG">
+		<appender-ref ref="R" />
+		<appender-ref ref="stdout" />
+	</root>
+
+</configuration>
