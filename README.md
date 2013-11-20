@@ -16,7 +16,9 @@ Adjusting connection details:
 	pom.xml / jdbc.* properties
 
 You can verify app is working by issuing an HTTP GET request against /service/page/, e.g. 
+
 	curl http://localhost:8080/<context-path>/service/page
+
 
 Starting client:
 ----------
