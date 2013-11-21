@@ -27,7 +27,7 @@ public class PageService {
 	public static final String P_DOWNLOADED = "withDownloadedStatus";
 	
 	@PersistenceUnit(unitName = "MySql")
-	EntityManagerFactory ef = Persistence.createEntityManagerFactory("MySql");
+	private static final EntityManagerFactory ef = Persistence.createEntityManagerFactory("MySql");
 	
 	@GET	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,14 +43,18 @@ public class PageService {
 	public String saveOrUpdate(PageList pages)
 	{
 		EntityManager em = ef.createEntityManager();
-		EntityTransaction txn = em.getTransaction();
-		txn.begin();
-		for (Page page : pages.getPages()) {
-			em.merge(page);	
-		}		
-		em.flush();
-		txn.commit();
-		return "{\"status\": \"ok\"}";
+		try {
+			EntityTransaction txn = em.getTransaction();
+			txn.begin();
+			for (Page page : pages.getPages()) {
+				em.merge(page);	
+			}		
+			em.flush();
+			txn.commit();
+			return "{\"status\": \"ok\"}";
+		} finally {
+			em.close();
+		}
 	}
 	
 	@GET	
@@ -59,8 +63,12 @@ public class PageService {
 	public Page getById(@PathParam("id") String id)
 	{
 		EntityManager em = ef.createEntityManager();
-		Page page = em.find(Page.class, id);
-		return page;
+		try {
+			Page page = em.find(Page.class, id);
+			return page;
+		} finally {
+			em.close();
+		}
 	}
 	
 	@GET	
@@ -69,16 +77,20 @@ public class PageService {
 	public PageList list(@QueryParam(P_DOWNLOADED) Boolean downloaded)
 	{
 		EntityManager em = ef.createEntityManager();
-		String queryStr = "from Page ";
-		if (downloaded != null)
-		{
-			queryStr += "where downloadedAt is "+(downloaded ? "not" : "") +" null"; 
+		try {
+			String queryStr = "from Page ";
+			if (downloaded != null)
+			{
+				queryStr += "where downloadedAt is "+(downloaded ? "not" : "") +" null"; 
+			}
+			Query query = em.createQuery(queryStr);
+			query.setMaxResults(10);
+			List<Page> results = query.getResultList();
+			PageList response = new PageList();
+			response.setPages(results);
+			return response;
+		} finally {
+			em.close();
 		}
-		Query query = em.createQuery(queryStr);
-		query.setMaxResults(10);
-		List<Page> results = query.getResultList();
-		PageList response = new PageList();
-		response.setPages(results);
-		return response;
 	}
 }

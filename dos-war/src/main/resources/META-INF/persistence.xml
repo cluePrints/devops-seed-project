@@ -17,7 +17,7 @@
 			<!-- <property name="hibernate.show_sql" value="true"/> -->
 			<property name="hibernate.flushMode" value="FLUSH_AUTO" />
 			<property name="hibernate.hbm2ddl.auto" value="check" />
-			  <property name="hibernate.ejb.entitymanager_factory_name" value="MySql"/>
+			  <property name="hibernate.ejb.entitymanager_factory_name" value="MySql"/>			  
 		</properties>
 	</persistence-unit>
 </persistence>

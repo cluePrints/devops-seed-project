@@ -3,11 +3,12 @@ Devops-seed-backend app
 
 Releasing schema:
 ---------
+	cd devops-server
 	mvn db-migration:migrate
 	
 Building web archive to deploy:
 ---------
-	# result will be in dos-server/target/devops-seed-backend.war
+	# result will be in dos-war/target/devops-seed-backend.war
 	cd devops-parent
 	mvn package
 
@@ -22,7 +23,7 @@ You can verify app is working by issuing an HTTP GET request against /service/pa
 
 Starting client:
 ----------
-	java -jar ../dos-seed-client/target/devops-seed-client-jar-with-dependencies.jar http://localhost:8080/devops-seed-backend/service
+	java -jar ../dos-seed-client/target/devops-seed-client-jar-with-dependencies.jar http://localhost:8080/dos-war-0.0.1-SNAPSHOT/service
 
 Server errors will be logged at:
 ----------

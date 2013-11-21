@@ -5,6 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
+	<module>../dos-war</module>
   	<module>../dos-server</module>
   	<module>../dos-seed-client</module>
   </modules>
